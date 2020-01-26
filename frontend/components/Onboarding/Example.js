@@ -3,16 +3,12 @@ import {
   StyleSheet,
   Dimensions
 } from "react-native";
-import { Block, Button, Text, theme } from "galio-framework";
+import { Block, Text, theme } from "galio-framework";
 
-const { height, width } = Dimensions.get("screen");
-
-import argonTheme from "../../constants/Theme";
+const { width } = Dimensions.get("screen");
 
 class Example extends React.Component {
   render() {
-    const { navigation } = this.props;
-
     return (
       <Block flex style={styles.container}>
         <Block center style={styles.title}>

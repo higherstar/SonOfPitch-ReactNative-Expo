@@ -1,21 +1,18 @@
 import React from "react";
 import {
-  ImageBackground,
-  Image,
   StyleSheet,
   StatusBar,
   Dimensions
 } from "react-native";
-import { Block, Button, Text, theme } from "galio-framework";
+import { Block, Button, theme } from "galio-framework";
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 
 import { Theaim, Instructions, Example } from "../components/Onboarding";
 import argonTheme from "../constants/Theme";
-import Images from "../constants/Images";
 
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
-class Onboarding extends React.Component {
+class OnBoarding extends React.Component {
 
   state = {
       step: 0,
@@ -27,7 +24,7 @@ class Onboarding extends React.Component {
     let { step, progress } = this.state;
 
     if (step === 3)
-      navigation.navigate("Home");
+      navigation.navigate("AddPlayer");
     else
       this.setState({
         step: step + 1,
@@ -86,6 +83,7 @@ const styles = StyleSheet.create({
   },
   padded: {
     paddingHorizontal: theme.SIZES.BASE * 3,
+    paddingVertical: theme.SIZES.BASE * 3,
     position: "relative",
     bottom: theme.SIZES.BASE,
     zIndex: 2,
@@ -112,4 +110,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Onboarding;
+export default OnBoarding;

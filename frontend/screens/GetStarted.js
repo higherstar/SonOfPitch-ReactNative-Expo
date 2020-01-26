@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  ImageBackground,
   Image,
   StyleSheet,
   StatusBar,
@@ -8,12 +7,12 @@ import {
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
-class Getstarted extends React.Component {
+class GetStarted extends React.Component {
   render() {
     const { navigation } = this.props;
 
@@ -25,25 +24,25 @@ class Getstarted extends React.Component {
         </Block>
         <Block flex space="between" style={styles.padded}>
             <Block flex space="around" style={{ zIndex: 2 }}>
-            <Block style={styles.context}>
-              <Text color="black" size={18}>
-                The hilarious
-              </Text>
-              <Text color="black" size={18}>
-                quick-pitch game
-              </Text>
-              <Text color="black" size={18}>
-                for the self-proclaimed
-              </Text>
-              <Text color="black" size={18}>
-                creative
-              </Text>
-            </Block>
+              <Block style={styles.context}>
+                <Text color="black" size={18}>
+                  The hilarious
+                </Text>
+                <Text color="black" size={18}>
+                  quick-pitch game
+                </Text>
+                <Text color="black" size={18}>
+                  for the self-proclaimed
+                </Text>
+                <Text color="black" size={18}>
+                  creative
+                </Text>
+              </Block>
               <Block center>
                 <Button
                   style={styles.button}
                   color={argonTheme.COLORS.SECONDARY}
-                  onPress={() => navigation.navigate("Onboarding")}
+                  onPress={() => navigation.navigate("OnBoarding")}
                   textStyle={{ color: argonTheme.COLORS.WHITE }}
                 >
                   New Game
@@ -51,7 +50,7 @@ class Getstarted extends React.Component {
                 <Button
                   style={styles.button}
                   color={argonTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("AddPlayer")}
                   textStyle={{ color: argonTheme.COLORS.WHITE }}
                 >
                   Continue Game
@@ -93,4 +92,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Getstarted;
+export default GetStarted;

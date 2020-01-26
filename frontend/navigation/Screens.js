@@ -9,14 +9,16 @@ import {
 import { Block } from "galio-framework";
 
 // screens
-import Getstarted from "../screens/Getstarted";
-import Onboarding from "../screens/Onboarding";
+import GetStarted from "../screens/GetStarted";
+import OnBoarding from "../screens/OnBoarding";
+import AddPlayer from "../screens/AddPlayer";
 import Home from "../screens/Home";
 import Pro from "../screens/Pro";
 import Profile from "../screens/Profile";
 import Register from "../screens/Register";
 import Elements from "../screens/Elements";
 import Articles from "../screens/Articles";
+
 // drawer
 import Menu from "./Menu";
 import DrawerItem from "../components/DrawerItem";
@@ -136,17 +138,23 @@ const HomeStack = createStackNavigator(
 // divideru se baga ca si cum ar fi un ecrna dar nu-i nimic duh
 const AppStack = createDrawerNavigator(
   {
-    Getstarted: {
-      screen: Getstarted,
+    GetStarted: {
+      screen: GetStarted,
       navigationOptions: {
         drawerLabel: () => {}
       }
     },
-    Onboarding: {
-      screen: Onboarding,
+    OnBoarding: {
+      screen: OnBoarding,
       navigationOptions: {
         drawerLabel: () => {}
       }
+    },
+    AddPlayer: {
+        screen: AddPlayer,
+        navigationOptions: {
+            drawerLabel: () => {}
+        }
     },
     Home: {
       screen: HomeStack,
