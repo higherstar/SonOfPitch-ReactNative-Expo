@@ -11,7 +11,11 @@ import { Block } from "galio-framework";
 // screens
 import GetStarted from "../screens/GetStarted";
 import OnBoarding from "../screens/OnBoarding";
+import ClientInfo from "../screens/ClientInfo";
+import ComeUpStart from "../screens/ComeUpStart";
+import ComeUpWaiting from "../screens/ComeUpWaiting";
 import AddPlayer from "../screens/AddPlayer";
+import VideoRecord from "../screens/VideoRecord";
 import Home from "../screens/Home";
 import Pro from "../screens/Pro";
 import Profile from "../screens/Profile";
@@ -155,6 +159,30 @@ const AppStack = createDrawerNavigator(
         navigationOptions: {
             drawerLabel: () => {}
         }
+    },
+    ClientInfo: {
+        screen: ClientInfo,
+        navigationOptions: {
+            drawerLabel: () => {}
+        }
+    },
+    ComeUpStart: {
+        screen: ComeUpStart,
+        navigationOptions: {
+            drawerLabel: () => {}
+        }
+    },
+    ComeUpWaiting: {
+      screen: ComeUpWaiting,
+      navigationOptions: {
+          drawerLabel: () => {}
+      }
+    },
+    VideoRecord: {
+      screen: VideoRecord,
+      navigationOptions: {
+          drawerLabel: () => {}
+      }
     },
     Home: {
       screen: HomeStack,

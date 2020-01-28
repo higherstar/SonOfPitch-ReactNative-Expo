@@ -26,15 +26,8 @@ class AddPlayer extends React.Component {
 
   goToNext = () => {
     const { navigation } = this.props;
-    let { step, progress } = this.state;
 
-    if (step === 3)
-      navigation.navigate("Home");
-    else
-      this.setState({
-        step: step + 1,
-        progress: progress + 25
-      });
+    navigation.navigate("ClientInfo");
   };
 
   addNewPlayer = () => {
