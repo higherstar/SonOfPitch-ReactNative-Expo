@@ -1,0 +1,22 @@
+const UI_LOADING = 'UI_LOADING';
+const UI_FAILED = 'UI_FAILED';
+
+const CREATE_GAME = 'CREATE_GAME';
+const GET_GAME = 'GET_GAME';
+const UPDATE_GAME = 'UPDATE_GAME';
+
+const GET_CARD = 'GET_CARD';
+
+const NEW_ROUND = 'NEW_ROUND';
+const ADD_VIDEO = 'ADD_VIDEO';
+
+export {
+    UI_LOADING,
+    UI_FAILED,
+    CREATE_GAME,
+    GET_GAME,
+    UPDATE_GAME,
+    GET_CARD,
+    NEW_ROUND,
+    ADD_VIDEO
+};
