@@ -2,11 +2,13 @@ import React from "react";
 import {
   StyleSheet,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Image
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 import { connect } from 'react-redux';
 import argonTheme from "../constants/Theme";
+import Images from "../constants/Images";
 
 const { width } = Dimensions.get("screen");
 
@@ -29,26 +31,33 @@ class Scores extends React.Component {
   };
 
   renderPlayers = () => {
-      const { game, videos } = this.props;
+      const { game, navigation } = this.props;
+      let winner = parseInt(JSON.stringify(navigation.getParam('winner')));
       let res = [];
 
       game.players.forEach(player => {
           let index = game.players.indexOf(player);
-          if (videos[index] !== null)
-              res.push(
-                  <Block flex key={index} space="between" row>
-                      <Block width={(width - theme.SIZES.BASE * 6) * 0.7} height={65} style={styles.playerRow}>
-                          <Text color="black" size={20}>
-                              {player.name}
-                          </Text>
-                      </Block>
-                      <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
-                          <Text color="black" size={20}>
-                              {player.countOfWin}
-                          </Text>
-                      </Block>
+          res.push(
+              <Block flex key={index} space="between" row>
+                  <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
+                      {
+                          index === winner && (
+                              <Image source={Images.cupLogo} style={styles.cupLogo} />
+                          )
+                      }
                   </Block>
-              );
+                  <Block width={(width - theme.SIZES.BASE * 6) * 0.5} height={65} style={styles.playerRow}>
+                      <Text color="black" size={20}>
+                          {player.name}
+                      </Text>
+                  </Block>
+                  <Block width={(width - theme.SIZES.BASE * 6) * 0.2} height={65} style={styles.playerRow}>
+                      <Text color="black" size={20}>
+                          {player.countOfWin}
+                      </Text>
+                  </Block>
+              </Block>
+          );
       });
 
       return res;
@@ -59,10 +68,10 @@ class Scores extends React.Component {
       <Block flex style={styles.container}>
         <Block flex space="between" style={styles.padded}>
           <Block style={styles.header}>
-            <Text color="black" size={25}>
+            <Text color="black" size={35}>
               The scores
             </Text>
-            <Text color="black" size={25}>
+            <Text color="black" size={35}>
               so far...
             </Text>
           </Block>

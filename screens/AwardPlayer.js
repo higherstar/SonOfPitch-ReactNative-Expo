@@ -46,17 +46,20 @@ class AwardPlayer extends React.Component {
 
   award = () => {
       const { winner } = this.state;
+      let win_index = winner;
       const { game, videos, navigation } = this.props;
-      console.log(videos);
 
       game.players.forEach((player) => {
          let index = game.players.indexOf(player);
           player.videos.push(videos[index]);
-         if (index === winner) player.countOfWin += 1;
+         if (index === winner) {
+             player.countOfWin += 1;
+             win_index = index;
+         }
       });
 
       this.props.updateGame(game);
-      navigation.navigate("Scores");
+      navigation.navigate("Scores", {winner: win_index});
   };
 
   renderPlayers = () => {
@@ -96,8 +99,6 @@ class AwardPlayer extends React.Component {
   };
 
   render() {
-      console.log('Award Players Videos:', this.props.videos);
-      console.log('Award Players Winner:', this.state.winner);
     return (
       <Block flex style={styles.container}>
         <Block flex space="between" style={styles.padded}>

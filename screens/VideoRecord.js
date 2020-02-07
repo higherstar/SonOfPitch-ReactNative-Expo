@@ -5,23 +5,25 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from "react-native";
+import { Icon } from 'react-native-elements';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Block, Button, Text, theme } from "galio-framework";
+import delay from 'delay';
 import argonTheme from "../constants/Theme";
 
 const { width } = Dimensions.get("screen");
-const base_url = "http://192.168.1.130:8080/api/videos/";
+const base_url = "https://sonofpitch.uptoworld.com/api/videos/";
 
 class VideoRecord extends React.Component {
 
-    static navigationOptions =
-    {
-        header: null,
-    };
+  static navigationOptions =
+  {
+    header: null,
+  };
 
   state = {
     videos: [],
@@ -29,7 +31,8 @@ class VideoRecord extends React.Component {
     hasPermission: null,
     type: Camera.Constants.Type.back,
     recording: false,
-    processing: false
+    processing: false,
+    duration: 0
   };
 
   componentWillMount() {
@@ -40,7 +43,21 @@ class VideoRecord extends React.Component {
           videos.push(null);
           this.setState({
               counter: 1,
-              videos          });
+              videos
+          });
+      }
+  }
+
+  async registerRecord() {
+      const { recording, duration } = this.state;
+
+      if (recording) {
+          await delay(1000);
+          this.setState(state => ({
+              ...state,
+              duration: state.duration + 1
+          }));
+          this.registerRecord();
       }
   }
 
@@ -71,9 +88,11 @@ class VideoRecord extends React.Component {
       if (this.cam) {
           this.setState({ recording: true }, async () => {
               try {
+                  this.registerRecord();
                   const { uri, codec = "mp4" } = await this.cam.recordAsync();
                   this.setState({
                       recording: false,
+                      duration: 0,
                       processing: true
                   });
                   const type = `video/${codec}`;
@@ -118,24 +137,34 @@ class VideoRecord extends React.Component {
   };
 
   _stopRecording = async () => {
-      console.log('stop recording');
       this.cam.stopRecording();
   };
 
+  printChronometer = seconds => {
+      const minutes = Math.floor(seconds / 60);
+      const remseconds = seconds % 60;
+      return '' + (minutes < 10 ? '0' : '') + minutes + ':' + (remseconds < 10 ? '0' : '') + remseconds;
+  };
+
   render() {
-    let { counter, hasPermission, recording, processing } = this.state;
+    let { counter, hasPermission, recording, processing, duration } = this.state;
     let { game } = this.props;
 
     let button = (
         <TouchableOpacity onPress={this._startRecording}>
-            <Block style={ styles.recordButton } />
+            <Block style={ styles.recordButton }>
+                <Icon name="videocam" size={30} color={argonTheme.COLORS['WHITE']} />
+            </Block>
         </TouchableOpacity>
     );
 
     if (recording) {
         button = (
             <TouchableOpacity onPress={this._stopRecording}>
-                <Block style={ styles.stopButton } />
+                <Block style={ styles.stopButton }>
+                    <Icon name="stop" size={30} color={argonTheme.COLORS['WHITE']} />
+                    <Text>{this.printChronometer(duration)}</Text>
+                </Block>
             </TouchableOpacity>
         )
     }
@@ -143,7 +172,7 @@ class VideoRecord extends React.Component {
     if (processing) {
         button = (
             <Block>
-                <ActivityIndicator animating size={18} />
+                <ActivityIndicator animating size="large" />
             </Block>
         )
     }
@@ -186,7 +215,7 @@ class VideoRecord extends React.Component {
                       </Block>
                   </Block>
               ) : (
-                  <ActivityIndicator animating size={18} />
+                  <ActivityIndicator animating size="large" />
               )
           }
       </Block>
@@ -239,7 +268,10 @@ const styles = StyleSheet.create({
     borderRadius: width / 7,
     backgroundColor: argonTheme.COLORS.SECONDARY,
     alignSelf: 'flex-end',
-    marginBottom: theme.SIZES.BASE *3
+    marginBottom: theme.SIZES.BASE *3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   stopButton: {
       width: width / 7,
@@ -247,7 +279,10 @@ const styles = StyleSheet.create({
       borderRadius: width / 7,
       backgroundColor: argonTheme.COLORS.ERROR,
       alignSelf: 'flex-end',
-      marginBottom: theme.SIZES.BASE *3
+      marginBottom: theme.SIZES.BASE *3,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
   }
 });
 

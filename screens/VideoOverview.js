@@ -12,7 +12,7 @@ import { Block, Button, Text, theme } from "galio-framework";
 import argonTheme from "../constants/Theme";
 
 const { width } = Dimensions.get("screen");
-const base_url = "http://192.168.1.130:8080/api/videos/";
+const base_url = "https://sonofpitch.uptoworld.com/api/videos/";
 
 class VideoOverview extends React.Component {
 
@@ -52,6 +52,16 @@ class VideoOverview extends React.Component {
               >
                   Open Video
               </Button>
+              {/*<Video*/}
+                  {/*source={{ uri: base_url + videos[id] }}*/}
+                  {/*rate={1.0}*/}
+                  {/*volume={1.0}*/}
+                  {/*isMuted={false}*/}
+                  {/*resizeMode="cover"*/}
+                  {/*shouldPlay*/}
+                  {/*isLooping*/}
+                  {/*style={{ width: 300, height: 300 }}*/}
+              {/*/>*/}
               {/*<Video source={{ uri: base_url + videos[id] }} />*/}
               <Button
                   style={styles.button}

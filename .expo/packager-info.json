@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 12495,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPid": 12610,
+  "expoServerNgrokUrl": "https://c5-p3f.goldbyol.sonofpitch-reactnative-expo.exp.direct",
+  "packagerNgrokUrl": "https://packager.c5-p3f.goldbyol.sonofpitch-reactnative-expo.exp.direct",
+  "ngrokPid": 12636
 }

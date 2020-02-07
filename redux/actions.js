@@ -11,7 +11,7 @@ import {
 } from './types';
 
 // const base_url = "http://192.168.1.130:8080/api/";
-const base_url = "https://sonofpitch-backend.herokuapp.com/api/";
+const base_url = "https://sonofpitch.uptoworld.com/api/";
 
 function uiLoading() {
     return {

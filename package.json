@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "delay": "^4.3.0",
     "expo": "^35.0.0",
     "expo-asset": "~7.0.0",
     "expo-camera": "^7.0.0",
