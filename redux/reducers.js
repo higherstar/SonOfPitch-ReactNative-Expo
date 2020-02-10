@@ -6,7 +6,8 @@ import {
     UPDATE_GAME,
     GET_CARD,
     NEW_ROUND,
-    ADD_VIDEO
+    ADD_VIDEO,
+    REMOVE_VIDEO
 } from './types';
 
 // initialState
@@ -18,6 +19,8 @@ const initialState = {
     clientIndex: -1,
     card: null,
     videos: null,
+    videoItemsIds: [],
+    videoItems: {},
     round: 0
 };
 
@@ -93,6 +96,17 @@ function applyUploadVideo(state, videos) {
     return {
         ...state,
         videos
+    };
+}
+
+function applyAddVideo(state, video) {
+    return {
+        ...state,
+        videoItemsIds: [video.id].concat(state.videoItemsIds),
+        videoItems: {
+            ...state.videoItems,
+            [video.id]: video,
+        }
     };
 }
 

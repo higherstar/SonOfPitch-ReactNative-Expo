@@ -9,6 +9,7 @@ const GET_CARD = 'GET_CARD';
 
 const NEW_ROUND = 'NEW_ROUND';
 const ADD_VIDEO = 'ADD_VIDEO';
+const REMOVE_VIDEO = 'REMOVE_VIDEO';
 
 export {
     UI_LOADING,
@@ -18,5 +19,6 @@ export {
     UPDATE_GAME,
     GET_CARD,
     NEW_ROUND,
-    ADD_VIDEO
+    ADD_VIDEO,
+    REMOVE_VIDEO
 };

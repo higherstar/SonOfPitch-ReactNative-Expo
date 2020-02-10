@@ -2,8 +2,7 @@ import React from "react";
 import {
   StyleSheet,
   Dimensions,
-  Linking,
-  View
+  Linking
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
@@ -13,7 +12,7 @@ import VideoPlayer from 'expo-video-player'
 import { Block, Button, Text, theme } from "galio-framework";
 import argonTheme from "../constants/Theme";
 
-const { width } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen");
 const base_url = "https://sonofpitch.uptoworld.com/api/videos/";
 
 class VideoOverview extends React.Component {
@@ -43,25 +42,45 @@ class VideoOverview extends React.Component {
     let { navigation, videos } = this.props;
     let video = JSON.stringify(navigation.getParam('video'));
 
-    console.log(video);
+    console.log('VideoOverView67:', video);
 
     return (
-      <View style={styles.container}>
-        {
-          video && (
-            <VideoPlayer
-              videoProps={{
-                shouldPlay: true,
-                resizeMode: Video.RESIZE_MODE_CONTAIN,
-                source: {
-                  uri: video,
-                },
-              }}
-              inFullscreen={true}
-            />
-          )
-        }
-      </View>
+      <Block flex style={styles.container}>
+          <Block center>
+            {
+              video && (
+                <VideoPlayer
+                  videoProps={{
+                    shouldPlay: true,
+                    resizeMode: Video.RESIZE_MODE_CONTAIN,
+                    source: {
+                      uri: video //'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                    }
+                  }}
+                  width={width - theme.SIZES.BASE * 6}
+                  height={300}
+                  inFullscreen={false}
+                />
+              )
+            }
+            <Button
+                style={styles.button}
+                color={argonTheme.COLORS.SECONDARY}
+                onPress={this.goToShare}
+                textStyle={{ color: argonTheme.COLORS.WHITE }}
+            >
+                Share
+            </Button>
+            <Button
+                style={styles.button}
+                color={argonTheme.COLORS.PRIMARY}
+                onPress={this.goToBack}
+                textStyle={{ color: argonTheme.COLORS.WHITE }}
+            >
+                Back
+            </Button>
+          </Block>
+      </Block>
     );
   }
 }

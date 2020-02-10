@@ -7,7 +7,8 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
-import Video from 'react-native-video';
+import { Video } from 'expo-av';
+import VideoPlayer from 'expo-video-player'
 import { Block, Button, Text, theme } from "galio-framework";
 import argonTheme from "../constants/Theme";
 
@@ -44,25 +45,20 @@ class VideoOverview extends React.Component {
     return (
       <Block flex style={styles.container}>
           <Block center>
-              {/* <Button
-                  style={styles.button}
-                  color={argonTheme.COLORS.SECONDARY}
-                  onPress={this.openVideo}
-                  textStyle={{ color: argonTheme.COLORS.WHITE }}
-              >
-                  Open Video
-              </Button> */}
-              <Video
-                  source={{ uri: base_url + videos[id] }}
-                  rate={1.0}
-                  volume={1.0}
-                  isMuted={false}
-                  resizeMode="cover"
-                  shouldPlay
-                  isLooping
-                  style={{ width: 300, height: 300 }}
-              />
-              {/*<Video source={{ uri: base_url + videos[id] }} />*/}
+              {
+                video && (
+                  <VideoPlayer
+                    videoProps={{
+                      shouldPlay: true,
+                      resizeMode: Video.RESIZE_MODE_CONTAIN,
+                      source: {
+                        uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                      },
+                    }}
+                    inFullscreen={false}
+                  />
+                )
+              }
               <Button
                   style={styles.button}
                   color={argonTheme.COLORS.SECONDARY}

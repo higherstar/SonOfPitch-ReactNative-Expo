@@ -89,7 +89,7 @@ class VideoRecord extends React.Component {
           this.setState({ recording: true }, async () => {
               try {
                   this.registerRecord();
-                  const { uri, codec = "mp4" } = await this.cam.recordAsync();
+                  const { uri } = await this.cam.recordAsync();
                   this.setState({
                       recording: false,
                       duration: 0,
