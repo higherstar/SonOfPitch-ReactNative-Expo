@@ -19,6 +19,18 @@ class ClientInfo extends React.Component {
       header: null,
   };
 
+  state = {
+    clientIndex: this.props.clientIndex
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.clientIndex !== nextProps.clientIndex) {
+      this.setState({
+        clientIndex: nextProps.clientIndex
+      });
+    }
+  }
+
   componentWillMount() {
     const { game } = this.props;
     this.props.newRound();
@@ -28,12 +40,12 @@ class ClientInfo extends React.Component {
 
   goToNext = () => {
     const { navigation } = this.props;
-
     navigation.navigate("ComeUpStart");
   };
 
   render() {
-    const { clientIndex, game } = this.props;
+    const { game } = this.props;
+    const { clientIndex } = this.state;
 
     return (
       <Block flex style={styles.container}>

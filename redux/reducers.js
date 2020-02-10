@@ -70,9 +70,16 @@ function applyGetCard(state, card) {
     }
 }
 
+function generateClientIndex(state) {
+    return Math.floor(Math.random() * Math.floor(state.game.players.length));
+}
+
 function applyNewRound(state) {
-    let clientIndex = Math.floor(Math.random() * state.game.players.length);
+    let clientIndex = generateClientIndex(state);
+    
+    console.log('clientIndex:', clientIndex);
     let round = state.round + 1;
+
     return {
         ...state,
         clientIndex,

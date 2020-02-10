@@ -87,7 +87,7 @@ class AwardPlayer extends React.Component {
                           </Text>
                       </Block>
                       <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
-                          <Text color="black" size={20} onPress={() => navigation.navigate('VideoOverview', {id: index})}>
+                          <Text color="black" size={20} onPress={() => navigation.navigate('VideoOverview', {video: videos[index]})}>
                               view video
                           </Text>
                       </Block>

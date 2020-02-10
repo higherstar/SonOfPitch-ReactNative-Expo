@@ -2,14 +2,12 @@ import React from "react";
 import {
   StyleSheet,
   Dimensions,
-  Linking,
-  View
+  Linking
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
-import { Video } from 'expo-av';
-import VideoPlayer from 'expo-video-player'
+import Video from 'react-native-video';
 import { Block, Button, Text, theme } from "galio-framework";
 import argonTheme from "../constants/Theme";
 
@@ -41,27 +39,48 @@ class VideoOverview extends React.Component {
 
   render() {
     let { navigation, videos } = this.props;
-    let video = JSON.stringify(navigation.getParam('video'));
-
-    console.log(video);
+    let id = JSON.stringify(navigation.getParam('id'));
 
     return (
-      <View style={styles.container}>
-        {
-          video && (
-            <VideoPlayer
-              videoProps={{
-                shouldPlay: true,
-                resizeMode: Video.RESIZE_MODE_CONTAIN,
-                source: {
-                  uri: video,
-                },
-              }}
-              inFullscreen={true}
-            />
-          )
-        }
-      </View>
+      <Block flex style={styles.container}>
+          <Block center>
+              {/* <Button
+                  style={styles.button}
+                  color={argonTheme.COLORS.SECONDARY}
+                  onPress={this.openVideo}
+                  textStyle={{ color: argonTheme.COLORS.WHITE }}
+              >
+                  Open Video
+              </Button> */}
+              <Video
+                  source={{ uri: base_url + videos[id] }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted={false}
+                  resizeMode="cover"
+                  shouldPlay
+                  isLooping
+                  style={{ width: 300, height: 300 }}
+              />
+              {/*<Video source={{ uri: base_url + videos[id] }} />*/}
+              <Button
+                  style={styles.button}
+                  color={argonTheme.COLORS.SECONDARY}
+                  onPress={this.goToShare}
+                  textStyle={{ color: argonTheme.COLORS.WHITE }}
+              >
+                  Share
+              </Button>
+              <Button
+                  style={styles.button}
+                  color={argonTheme.COLORS.PRIMARY}
+                  onPress={this.goToBack}
+                  textStyle={{ color: argonTheme.COLORS.WHITE }}
+              >
+                  Back
+              </Button>
+          </Block>
+      </Block>
     );
   }
 }

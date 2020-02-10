@@ -95,8 +95,23 @@ class VideoRecord extends React.Component {
                       duration: 0,
                       processing: true
                   });
-                  console.log('Video URL:', uri);
-                  videos.push(uri);
+                  const type = `video/${codec}`;
+
+                  const data = new FormData();
+                  data.append("video", {
+                      name: "mobile-video-upload",
+                      game: game._id,
+                      player: counter,
+                      type,
+                      uri
+                  });
+
+                  let video_response = await fetch(base_url, {
+                      method: "post",
+                      body: data
+                  });
+                  let video = await video_response.json();
+                  videos.push(video._id);
 
                   counter += 1;
                   if (counter === clientIndex){
