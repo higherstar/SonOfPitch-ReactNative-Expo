@@ -68,6 +68,7 @@ function getGameSuccess(response) {
 function updateGame(game) {
     return dispatch => {
         axios.put(`${base_url}games/${game._id}`, game).then(res => {
+            console.log('UpdateGame:', res);
             dispatch(updateGameSuccess(res.data));
         }).catch(err => {
             console.log(err);

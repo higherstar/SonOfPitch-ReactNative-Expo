@@ -3,7 +3,9 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Image
+  Image,
+  View,
+  BackHandler
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 import { connect } from 'react-redux';
@@ -26,17 +28,23 @@ class AwardPlayer extends React.Component {
   };
 
   componentWillMount() {
-      if (this.props.clientIndex === 0)
-          this.setState({
-              winner: 1
-          });
+    if (this.props.clientIndex === 0)
+      this.setState({
+          winner: 1
+      });
   }
 
-  goToNext = () => {
-      const { navigation } = this.props;
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
 
-      navigation.navigate("ComeUpWaiting");
-  };
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
 
   setWinner = (index) => {
       this.setState({
@@ -64,35 +72,42 @@ class AwardPlayer extends React.Component {
 
   renderPlayers = () => {
       const { winner } = this.state;
-      const { game, videos, navigation } = this.props;
+      const { game, videos, navigation, clientIndex } = this.props;
       let res = [];
 
       game.players.forEach(player => {
-          let index = game.players.indexOf(player);
-          if (videos[index] !== null)
-              res.push(
-                  <Block flex key={index} space="between" row>
-                      <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
-                          {
-                              index === winner && (
-                                  <Image source={Images.cupLogo} style={styles.cupLogo} />
-                              )
-                          }
-                      </Block>
-                      <Block width={(width - theme.SIZES.BASE * 6) * 0.4} height={65} style={styles.playerRow}>
-                          <Text color="black" size={20} onPress={() => {
-                              this.setWinner(index);
-                          }}>
-                              {player.name}
-                          </Text>
-                      </Block>
-                      <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
-                          <Text color="black" size={20} onPress={() => navigation.navigate('VideoOverview', {video: videos[index]})}>
-                              view video
-                          </Text>
-                      </Block>
+        let index = game.players.indexOf(player);
+        if (index !== clientIndex)
+          res.push(
+            <Block flex key={index} space="between" row>
+              <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
+                {
+                  index === winner && (
+                    <Image source={Images.cupLogo} style={styles.cupLogo} />
+                  )
+                }
+                {
+                  index !== winner && (
+                    <View style={styles.emptyView} onPress={() => {this.setWinner(index);}} />
+                  )
+                }
+              </Block>
+              <Block width={(width - theme.SIZES.BASE * 6) * 0.4} height={65} style={styles.playerRow} onPress={() => {this.setWinner(index);}}>
+                <Text color="black" size={20} onPress={() => {this.setWinner(index);}}>
+                  {player.name}
+                </Text>
+              </Block>
+              <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
+                    {
+                      videos && videos[index] && (
+                        <Text color="black" size={15} onPress={() => navigation.navigate('VideoOverview', {video: videos[index], name: player.name})}>
+                          view video
+                        </Text>
+                      )
+                    }
                   </Block>
-              );
+            </Block>
+          );
       });
 
       return res;
@@ -108,16 +123,16 @@ class AwardPlayer extends React.Component {
             </Text>
           </Block>
           <ScrollView style={styles.content}>
-              <Block center>
-                  {this.renderPlayers()}
-              </Block>
+            <Block center>
+              {this.renderPlayers()}
+            </Block>
           </ScrollView>
           <Block center>
             <Button
-                style={styles.button}
-                color={argonTheme.COLORS.SECONDARY}
-                onPress={this.award}
-                textStyle={{ color: argonTheme.COLORS.WHITE }}
+              style={styles.button}
+              color={argonTheme.COLORS.SECONDARY}
+              onPress={this.award}
+              textStyle={{ color: argonTheme.COLORS.WHITE }}
             >
               Award!
             </Button>
@@ -132,12 +147,16 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.COLORS.WHITE
   },
-    playerRow: {
-      display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
-    },
+  emptyView: {
+    width: (width - theme.SIZES.BASE * 6) * 0.3,
+    height: 65
+  },
+  playerRow: {
+    display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center"
+  },
   padded: {
     paddingHorizontal: theme.SIZES.BASE * 3,
     paddingVertical: theme.SIZES.BASE * 3,
@@ -162,8 +181,8 @@ const styles = StyleSheet.create({
     paddingVertical: 50
   },
   cupLogo: {
-    width: 65,
-    height: 65,
+    width: 50,
+    height: 50,
     display: "flex",
     alignItems: "center",
     justifyContent: "center"

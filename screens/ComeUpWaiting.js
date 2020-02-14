@@ -1,7 +1,8 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from "react-native";
 import { connect } from "react-redux";
 import { Block, Text, theme } from "galio-framework";
@@ -17,13 +18,24 @@ class ComeUpWaiting extends React.Component {
       header: null,
   };
 
-  state = {
-    progress: 0,
-    timer: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+        progress: 0,
+        timer: props.timer
+    }
+  }
 
-  componentDidMount() {
-      let { progress, timer } = this.state;
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
+
+  componentWillMount() {
+    let { progress, timer } = this.state;
       const { navigation, time } = this.props;
       timer = time;
       let _this = this;
@@ -44,6 +56,10 @@ class ComeUpWaiting extends React.Component {
               });
           }
       }, 1000)
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
 
   render() {

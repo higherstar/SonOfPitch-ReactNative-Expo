@@ -1,7 +1,8 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
@@ -16,6 +17,18 @@ class ComeUpStart extends React.Component {
   {
       header: null,
   };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
 
   componentWillMount() {
     this.props.getCard();

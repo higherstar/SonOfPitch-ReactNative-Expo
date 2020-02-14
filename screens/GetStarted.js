@@ -3,7 +3,8 @@ import {
   Image,
   StyleSheet,
   StatusBar,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from "react-native";
 import { connect } from "react-redux";
 import { Block, Button, Text, theme } from "galio-framework";
@@ -14,10 +15,23 @@ import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
 class GetStarted extends React.Component {
-    static navigationOptions =
-    {
-        header: null,
-    };
+  static navigationOptions =
+  {
+      header: null,
+  };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    BackHandler.exitApp(); 
+    return true;
+  }
 
   render() {
     const { navigation, game } = this.props;

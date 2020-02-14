@@ -7,7 +7,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Alert
+  Alert,
+  BackHandler
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 import { Icon } from 'react-native-elements';
@@ -33,6 +34,18 @@ class AddPlayer extends React.Component {
     isPlayable: false,
     time: 0,
   };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
 
   componentWillReceiveProps(nextProps) {
     const { navigation, isLoading, errorMsg } = this.props;

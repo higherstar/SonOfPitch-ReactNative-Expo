@@ -74,7 +74,11 @@ function applyGetCard(state, card) {
 }
 
 function generateClientIndex(state) {
-    return Math.floor(Math.random() * Math.floor(state.game.players.length));
+    let index = Math.floor(Math.random() * Math.floor(state.game.players.length));
+    while(index === state.clientIndex)
+        index = Math.floor(Math.random() * Math.floor(state.game.players.length));
+    
+    return index;
 }
 
 function applyNewRound(state) {
@@ -92,7 +96,6 @@ function applyNewRound(state) {
 }
 
 function applyUploadVideo(state, videos) {
-
     return {
         ...state,
         videos

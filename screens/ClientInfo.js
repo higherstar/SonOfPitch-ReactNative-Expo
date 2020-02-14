@@ -1,7 +1,8 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
@@ -23,6 +24,18 @@ class ClientInfo extends React.Component {
     clientIndex: this.props.clientIndex
   };
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.clientIndex !== nextProps.clientIndex) {
       this.setState({
@@ -34,7 +47,7 @@ class ClientInfo extends React.Component {
   componentWillMount() {
     const { game } = this.props;
     this.props.newRound();
-    if (game)
+    if(game)
       this.props.getGame(game._id);
   }
 

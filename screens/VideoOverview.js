@@ -8,7 +8,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
 import { Video } from 'expo-av';
-import VideoPlayer from 'expo-video-player'
+import * as FileSystem from 'expo-file-system';
+import VideoPlayer from 'expo-video-player';
+// import VideoPlayer from '@expo/videoplayer';
 import { Block, Button, Text, theme } from "galio-framework";
 import argonTheme from "../constants/Theme";
 
@@ -39,14 +41,19 @@ class VideoOverview extends React.Component {
   };
 
   render() {
-    let { navigation, videos } = this.props;
-    let video = JSON.stringify(navigation.getParam('video'));
-
-    console.log('VideoOverView67:', video);
+    let { navigation } = this.props;
+    let video = navigation.getParam('video');
+    let name = navigation.getParam('name');
 
     return (
       <Block flex style={styles.container}>
-          <Block center>
+        <Block flex space="between" style={styles.padded}>
+          <Block style={styles.header}>
+            <Text color="black" size={25}>
+                {name}'s pitch!
+            </Text>
+          </Block>
+          <Block style={styles.videoContainer}>
             {
               video && (
                 <VideoPlayer
@@ -54,22 +61,24 @@ class VideoOverview extends React.Component {
                     shouldPlay: true,
                     resizeMode: Video.RESIZE_MODE_CONTAIN,
                     source: {
-                      uri: video //'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                      uri: `${FileSystem.documentDirectory}SonOfPitch-Videos/demo_${video}.mov`
                     }
                   }}
-                  width={width - theme.SIZES.BASE * 6}
-                  height={300}
-                  inFullscreen={false}
+                  style = {styles.video}
+                  width = {width - theme.SIZES.BASE * 3}
+                  height = {height - theme.SIZES.BASE * 4 - 150}
                 />
               )
             }
+          </Block>
+          <Block center>
             <Button
                 style={styles.button}
                 color={argonTheme.COLORS.SECONDARY}
                 onPress={this.goToShare}
                 textStyle={{ color: argonTheme.COLORS.WHITE }}
             >
-                Share
+              Share
             </Button>
             <Button
                 style={styles.button}
@@ -77,9 +86,10 @@ class VideoOverview extends React.Component {
                 onPress={this.goToBack}
                 textStyle={{ color: argonTheme.COLORS.WHITE }}
             >
-                Back
+              Back
             </Button>
           </Block>
+        </Block>
       </Block>
     );
   }
@@ -90,24 +100,24 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE
   },
   padded: {
-    paddingHorizontal: theme.SIZES.BASE * 3,
-    paddingVertical: theme.SIZES.BASE * 3,
+    paddingHorizontal: theme.SIZES.BASE * 1.5,
+    paddingVertical: theme.SIZES.BASE * 1,
     position: "relative",
     bottom: theme.SIZES.BASE,
     zIndex: 2,
   },
   button: {
-    width: width - theme.SIZES.BASE * 6,
-    height: theme.SIZES.BASE * 3,
+    width: width - theme.SIZES.BASE * 3,
+    height: theme.SIZES.BASE * 2.5,
     shadowRadius: 0,
     shadowOpacity: 0,
-    marginTop: 20
+    marginTop: 10
   },
   context: {
     fontWeight: "700"
   },
   header: {
-    marginTop: 50
+    marginTop: 30
   },
   videoContainer: {
     flex: 1,

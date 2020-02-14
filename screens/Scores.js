@@ -3,20 +3,36 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Image
+  Image,
+  BackHandler
 } from "react-native";
 import { Block, Button, Text, theme } from "galio-framework";
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators as actions } from "../redux/actions";
+
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
 
 const { width } = Dimensions.get("screen");
 
 class Scores extends React.Component {
-    static navigationOptions =
-    {
-        header: null,
-    };
+  static navigationOptions =
+  {
+      header: null,
+  };
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    return true;
+  }
 
   finish = () => {
       const { navigation } = this.props;
@@ -25,9 +41,9 @@ class Scores extends React.Component {
   };
 
   replay = () => {
-      const { navigation } = this.props;
-
-      navigation.navigate("ClientInfo");
+    const { navigation } = this.props;
+    this.props.newRound();
+    navigation.navigate("ClientInfo");
   };
 
   renderPlayers = () => {
@@ -41,9 +57,9 @@ class Scores extends React.Component {
               <Block flex key={index} space="between" row>
                   <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
                       {
-                          index === winner && (
-                              <Image source={Images.cupLogo} style={styles.cupLogo} />
-                          )
+                        index === winner && (
+                            <Image source={Images.cupLogo} style={styles.cupLogo} />
+                        )
                       }
                   </Block>
                   <Block width={(width - theme.SIZES.BASE * 6) * 0.5} height={65} style={styles.playerRow}>
@@ -138,8 +154,8 @@ const styles = StyleSheet.create({
     paddingVertical: 50
   },
   cupLogo: {
-    width: 65,
-    height: 65,
+    width: 50,
+    height: 50,
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
@@ -147,11 +163,17 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    const { game, videos } = state;
-    return {
-        game,
-        videos
-    };
+  const { game, videos } = state;
+  return {
+      game,
+      videos
+  };
 }
 
-export default connect(mapStateToProps)(Scores);
+function mapDispatchToProps(dispatch) {
+  return {
+    newRound: bindActionCreators(actions.newRound, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Scores);

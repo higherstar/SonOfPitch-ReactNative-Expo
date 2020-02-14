@@ -11,8 +11,10 @@ import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import * as FileSystem from 'expo-file-system';
 import { Block, Button, Text, theme } from "galio-framework";
 import delay from 'delay';
+import shortid from 'shortid';
 import argonTheme from "../constants/Theme";
 
 const { width } = Dimensions.get("screen");
@@ -68,35 +70,47 @@ class VideoRecord extends React.Component {
 
   goToNext = () => {
       const { navigation, clientIndex, game } = this.props;
-      let { counter } = this.state;
+      let { counter, videos } = this.state;
 
       counter += 1;
       if(counter === clientIndex)
           counter +=1;
 
-      if (counter === game.players.length)
+      videos.push(null);
+
+      if (counter === game.players.length){
+        this.props.addVideo(videos);
         navigation.navigate("AwardPlayer");
-      else
-        this.setState({ counter });
+      } else
+        this.setState({ counter, videos });
   };
 
   _startRecording = async () => {
       const { game, navigation, clientIndex } = this.props;
       let { counter, videos } = this.state;
-      console.log('start recording:', counter);
 
       if (this.cam) {
           this.setState({ recording: true }, async () => {
               try {
                   this.registerRecord();
-                  const { uri } = await this.cam.recordAsync();
+                  const record = await this.cam.recordAsync();
+                  const videoId = shortid.generate();
+
+                  await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SonOfPitch-Videos/`, {
+                    intermediates: true
+                  });
+              
+                  await FileSystem.moveAsync({
+                    from: record.uri,
+                    to: `${FileSystem.documentDirectory}SonOfPitch-Videos/demo_${videoId}.mov`
+                  });
+
                   this.setState({
                       recording: false,
                       duration: 0,
                       processing: true
                   });
-                  console.log('Video URL:', uri);
-                  videos.push(uri);
+                  videos.push(videoId);
 
                   counter += 1;
                   if (counter === clientIndex){
@@ -111,6 +125,7 @@ class VideoRecord extends React.Component {
                   }, () => {
                       if (counter === game.players.length) {
                           this.props.addVideo(videos);
+                          console.log('Videos:', videos);
                           navigation.navigate("AwardPlayer");
                       }
                   });
@@ -230,7 +245,7 @@ const styles = StyleSheet.create({
     fontWeight: "700"
   },
   header: {
-    marginTop: 50
+    marginTop: 30
   },
   videoContainer: {
     flex: 1,
