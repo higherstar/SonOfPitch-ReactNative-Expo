@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators as actions } from "../redux/actions";
 import argonTheme from "../constants/Theme";
 import Images from "../constants/Images";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("screen");
 
@@ -80,32 +81,36 @@ class AwardPlayer extends React.Component {
         if (index !== clientIndex)
           res.push(
             <Block flex key={index} space="between" row>
-              <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
-                {
-                  index === winner && (
-                    <Image source={Images.cupLogo} style={styles.cupLogo} />
-                  )
-                }
-                {
-                  index !== winner && (
-                    <View style={styles.emptyView} onPress={() => {this.setWinner(index);}} />
-                  )
-                }
-              </Block>
-              <Block width={(width - theme.SIZES.BASE * 6) * 0.4} height={65} style={styles.playerRow} onPress={() => {this.setWinner(index);}}>
-                <Text color="black" size={20} onPress={() => {this.setWinner(index);}}>
-                  {player.name}
-                </Text>
-              </Block>
-              <Block width={(width - theme.SIZES.BASE * 6) * 0.3} height={65} style={styles.playerRow}>
+              <TouchableOpacity onPress={() => {this.setWinner(index);}}>
+                <Block flex space="between" row width={(width - theme.SIZES.BASE * 6) * 0.7}>
+                  <Block width={(width - theme.SIZES.BASE * 6) * 0.2} height={65} style={styles.playerRow}>
                     {
-                      videos && videos[index] && (
-                        <Text color="black" size={15} onPress={() => navigation.navigate('VideoOverview', {video: videos[index], name: player.name})}>
-                          view video
-                        </Text>
+                      index === winner && (
+                        <Image source={Images.cupLogo} style={styles.cupLogo} />
+                      )
+                    }
+                    {
+                      index !== winner && (
+                        <View style={styles.emptyView} onPress={() => {this.setWinner(index);}} />
                       )
                     }
                   </Block>
+                  <Block width={(width - theme.SIZES.BASE * 6) * 0.5} height={65} style={styles.playerRow}>
+                    <Text color="black" size={20}>
+                      {player.name}
+                    </Text>
+                  </Block>
+                </Block>
+              </TouchableOpacity>
+              <Block height={65} style={styles.playerRow} width={(width - theme.SIZES.BASE * 6) * 0.3}>
+                  {
+                    videos && videos[index] && (
+                      <Text color="black" size={15} onPress={() => navigation.navigate('VideoOverview', {video: videos[index], name: player.name})}>
+                        view video
+                      </Text>
+                    )
+                  }
+                </Block>
             </Block>
           );
       });

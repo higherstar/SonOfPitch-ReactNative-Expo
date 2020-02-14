@@ -146,8 +146,18 @@ class VideoRecord extends React.Component {
       return '' + (minutes < 10 ? '0' : '') + minutes + ':' + (remseconds < 10 ? '0' : '') + remseconds;
   };
 
+  switchCameraType = () => {
+    let { type } = this.state;
+    if (type === Camera.Constants.Type.back)
+        type = Camera.Constants.Type.front;
+    else
+        type = Camera.Constants.Type.back;
+
+     this.setState({type});   
+  };
+
   render() {
-    let { counter, hasPermission, recording, processing, duration } = this.state;
+    let { counter, hasPermission, recording, processing, duration, type } = this.state;
     let { game } = this.props;
 
     let button = (
@@ -189,14 +199,19 @@ class VideoRecord extends React.Component {
                       </Block>
                       <Block style={styles.videoContainer}>
                           {
-                              hasPermission && (
-                                  <Camera ref={cam => (this.cam = cam)} style={styles.video} type={Camera.Constants.Type.back}>
-                                      <Block style={styles.videoInnerContainer}>
+                                hasPermission && (
+                                    <Camera ref={cam => (this.cam = cam)} style={styles.video} type={type}>
+                                        <TouchableOpacity onPress={this.switchCameraType}>
+                                            <Block style={styles.cameraType}>
+                                                <Icon name="switch-camera" size={30} color={argonTheme.COLORS['WHITE']} />
+                                            </Block>
+                                        </TouchableOpacity>
+                                        <Block style={styles.videoInnerContainer}>
                                           {
                                               button
                                           }
-                                      </Block>
-                                  </Camera>
+                                        </Block>
+                                    </Camera>
                               )
                           }
                           {
@@ -261,6 +276,12 @@ const styles = StyleSheet.create({
   video: {
       width: width - theme.SIZES.BASE * 6,
       height: '100%'
+  },
+  cameraType: {
+    top: 10,
+    marginLeft: 10,
+    marginRight: 'auto',
+    height: 50
   },
   recordButton: {
     width: width / 7,
